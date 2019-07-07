@@ -9,4 +9,3 @@ def get_stock_returns(stock):
     #         "X-RapidAPI-Key": "6fa4e1054dmshedd5deb5fce65fcp176a66jsnbd478274f86a"
     #     }
     # )
-
