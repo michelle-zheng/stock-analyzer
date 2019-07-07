@@ -1,6 +1,5 @@
 import stock_api
 
-
 def main():
     while True:
         cmd = raw_input("Enter 'm' to determine the ideal MVP portfolio. Enter 'c' for CML analysis. Enter 'q' to quit. Enter your command: ").lower()
@@ -36,6 +35,7 @@ def main():
                     rf_return = None
                     print("Enter a value between 0 and 100.")
 
+            cml_analysis.get_analysis(rf_return, stock_1, stock_2)
 
 if __name__ == '__main__':
     main()
