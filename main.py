@@ -1,4 +1,6 @@
 import stock_api
+import mvp
+import cml
 
 def main():
     while True:
@@ -35,7 +37,7 @@ def main():
                     rf_return = None
                     print("Enter a value between 0 and 100.")
 
-            cml_analysis.get_analysis(rf_return, stock_1, stock_2)
+            cml.analysis(rf_return, stock_1, stock_2)
 
 if __name__ == '__main__':
     main()

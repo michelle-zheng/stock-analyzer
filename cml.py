@@ -1,11 +1,11 @@
 import stock_api
 import math
 
-def get_analysis(stock_1, stock_2, f_return):
+def analysis(stock_1, stock_2, rf_return):
     print("Case 1:")
     print("Given proportion invested in risk-free asset: 0%\nGiven prpertion invested in market portfolio: 100%\n\n")
-    # stock_1_returns = stock_api.get_stock_returns(stock_1)
-    # stock_2_returns = stock_api.get_stock_returns(stock_2)
+    stock_1_returns = stock_api.get_stock_returns(stock_1)
+    stock_2_returns = stock_api.get_stock_returns(stock_2)
     # stock_1_proportion = stock_api.get_stock_proportion(stock_1)
     # stock_2_proportion = stock_api.get_stock_proportion(stock_2)
     # stock_1_variance = stock_api.get_stock_variance(stock_1)
