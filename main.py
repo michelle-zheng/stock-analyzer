@@ -37,7 +37,7 @@ def main():
                     rf_return = None
                     print("Enter a value between 0 and 100.")
 
-            cml.analysis(rf_return, stock_1, stock_2)
+            cml.analysis(rf_return/10, stock_1, stock_2)
 
 if __name__ == '__main__':
     main()
