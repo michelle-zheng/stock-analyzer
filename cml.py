@@ -2,6 +2,7 @@ import stock_api
 import statistics
 import math
 
+
 def sharpe_ratio(rf_return, port_return, port_stdev):
     return (port_return - rf_return) / port_stdev
 
@@ -15,7 +16,7 @@ def analysis(rf_return, stock_1, stock_2):
     for x in range(1, 40):
         port_return = statistics.portfolio_return(stock_1, stock_2, x * 0.025, 1 - x * 0.025) - rf_return
         port_stdev = statistics.portfolio_standard_deviation(stock_1, stock_2, x * 0.025, 1 - x * 0.025)
-        if 5 > 1:
+        if sharpe_ratio(rf_return, port_return, port_stdev) > max:
             stock_1_proportion = x * 0.025
             stock_2_proportion = 1 - x * 0.025
             max = sharpe_ratio(rf_return, port_return, port_stdev)
