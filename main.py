@@ -20,7 +20,7 @@ def main():
         stock_2_returns = stock_api.get_stock_returns(stock_2)
 
         if cmd == "m":
-            mvp.mvpAnalysis(stock_1_returns, stock_2_returns)
+            mvp.mvpAnalysis(stock_1, stock_2)
         elif cmd == "c":
             # Get return on risk-free asset
             rf_return = None
