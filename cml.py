@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 import statistics
 
 
@@ -33,6 +35,22 @@ def analysis(rf_return, stock_1, stock_2, monthly_returns):
     for i in range(len(portfolio_sharpe_ratios)):
         if portfolio_sharpe_ratios[i] > portfolio_sharpe_ratios[market_portfolio_index]:
             market_portfolio_index = i
+
+    # Frontier
+    port_returns = [portfolio_returns[index] for index in range(len(portfolio_returns)) if index % 4 == 0]
+    port_sds = [portfolio_sds[index] for index in range(len(portfolio_sds)) if index % 4 == 0]
+    port_srs = [portfolio_sharpe_ratios[index] for index in range(len(portfolio_sharpe_ratios)) if index % 4 == 0]
+
+    df = pd.DataFrame([port_returns, port_sds, port_srs]).transpose()
+    df.columns = ['Returns', 'Volatility', 'Sharpe Ratio']
+
+    plt.style.use('seaborn-dark')
+    df.plot.scatter(x='Volatility', y='Returns', c='Sharpe Ratio',
+                    cmap='RdYlGn', edgecolors='black', figsize=(10, 8), grid=True)
+    plt.xlabel('Volatility (Std. Deviation)')
+    plt.ylabel('Expected Returns')
+    plt.title('Efficient Frontier')
+    plt.show()
 
     # Case 1: 100% in market portfolio, 0% in risk-free asset
     print("\nCase 1:")
