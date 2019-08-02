@@ -1,47 +1,59 @@
-import stock_api
+import numpy as np
 import statistics
-import math
-
-def sharpe_ratio(rf_return, port_return, port_stdev):
-    return (port_return - rf_return) / port_stdev
 
 
-def analysis(rf_return, stock_1, stock_2):
-    stock_1_proportion = 0
-    stock_2_proportion = 1
-    port_return = statistics.portfolio_return(stock_1, stock_2, stock_1_proportion, stock_2_proportion) - rf_return
-    port_stdev = statistics.portfolio_standard_deviation(stock_1, stock_2, stock_1_proportion, stock_2_proportion)
-    max = sharpe_ratio(rf_return, port_return, port_stdev)
-    for x in range(1, 40):
-        port_return = statistics.portfolio_return(stock_1, stock_2, x * 0.025, 1 - x * 0.025) - rf_return
-        port_stdev = statistics.portfolio_standard_deviation(stock_1, stock_2, x * 0.025, 1 - x * 0.025)
-        if 5 > 1:
-            stock_1_proportion = x * 0.025
-            stock_2_proportion = 1 - x * 0.025
-            max = sharpe_ratio(rf_return, port_return, port_stdev)
-    
-    mkt_port_return = statistics.portfolio_return(stock_1, stock_2, stock_1_proportion, stock_2_proportion)
-    mkt_variance = statistics.portfolio_variance(stock_1, stock_2, stock_1_proportion, stock_2_proportion)
-    mkt_stdev = math.sqrt(mkt_variance)
+def sharpe_ratios(rf_return, returns, standard_deviations):
+    return [(er - rf_return) / sd for er, sd in zip(returns, standard_deviations)]
 
+
+def analysis(rf_return, stock_1, stock_2, monthly_returns):
+    # Find the market portfolio
+    market_portfolio_index = 0
+
+    # List of weights of stocks
+    weights_stock_1 = np.array(list(range(0, 41))) / 40.0
+    weights_stock_2 = 1 - weights_stock_1
+    weights = np.array([weights_stock_1, weights_stock_2]).T
+
+    # Calculate annual mean returns of each stock
+    returns = statistics.annual_mean_returns(monthly_returns)
+
+    # Calculate annual covariance
+    covariances = statistics.annual_covariances(monthly_returns)
+
+    # Calculate stock portfolio statistics
+    portfolio_returns = statistics.portfolio_returns(weights, returns)
+    portfolio_variances = statistics.portfolio_variances(weights, covariances)
+    portfolio_sds = statistics.portfolio_standard_deviations(portfolio_variances)
+
+    # Calculate Sharpe ratios
+    portfolio_sharpe_ratios = sharpe_ratios(rf_return, portfolio_returns, portfolio_sds)
+
+    # Find maximum Sharpe ratio
+    for i in range(len(portfolio_sharpe_ratios)):
+        if portfolio_sharpe_ratios[i] > portfolio_sharpe_ratios[market_portfolio_index]:
+            market_portfolio_index = i
+
+    # Case 1: 100% in market portfolio, 0% in risk-free asset
     print("\nCase 1:")
-    print("Given proportion invested in risk-free asset: 0%\nGiven prpertion invested in market portfolio: 100%\n")
-    print("Maximum Sharpe ratio: {:.2f} %" .format(max))
-    print("Market portfolio proportion {:s} : {:.2f} %".format(stock_1, stock_1_proportion * 100))
-    print("Market portfolio proportion {:s} : {:.2f} %".format(stock_2, stock_2_proportion * 100))
-    print("Market portfolio expected return: {:.2f} %".format(mkt_port_return * 100))
-    print("Market portfolio standard deviation: {:.2f} %".format(mkt_stdev * 100))
+    print("Given proportion invested in risk-free asset: 0%")
+    print("Given proportion invested in market portfolio: 100% \n")
+    print("Maximum Sharpe ratio: {:.2f}".format(portfolio_sharpe_ratios[market_portfolio_index]))
+    print("Market portfolio proportion {:s} : {:.2f}%".format(stock_1, weights[market_portfolio_index][0]*100))
+    print("Market portfolio proportion {:s} : {:.2f}%".format(stock_2, weights[market_portfolio_index][1]*100))
+    print("Market portfolio expected return: {:.2f}%".format(portfolio_returns[market_portfolio_index] * 100))
+    print("Market portfolio standard deviation: {:.2f}%".format(portfolio_sds[market_portfolio_index] * 100))
 
-    port_exp_return = 0.5 * rf_return + 0.5 * mkt_port_return
-    port_stdev = 0.5 * mkt_stdev
+    # Case 2: 50% in market portfolio, 50% in risk-free asset
     print("\nCase 2:")
-    print("Given proportion invested in risk-free asset: 50%\nGiven proportion invested in market portfolio: 50%\n")
-    print("Portfolio expected return: {:.2f} %".format(port_exp_return * 100))
-    print("Portfolio standard deviation: {:.2f} %".format(port_stdev * 100))
+    print("Given proportion invested in risk-free asset: 50%")
+    print("Given proportion invested in market portfolio: 50%\n")
+    print("Portfolio expected return: {:.2f}%".format((0.5 * rf_return + 0.5 * portfolio_returns[market_portfolio_index]) * 100))
+    print("Portfolio standard deviation: {:.2f}%".format((0.5 * portfolio_sds[market_portfolio_index]) * 100))
 
-    port_exp_return = -0.5 * rf_return + 1.5 * mkt_port_return
-    port_stdev = 1.5 * mkt_stdev
+    # Case 3: 150% in market portfolio, -50% in risk-free asset
     print("\nCase 3:")
-    print("Given proportion invested in risk-free asset: -50%\nGiven prpertion invested in market portfolio: 150%\n")
-    print("Portfolio expected return: {:.2f} %".format(port_exp_return * 100))
-    print("Portfolio standard deviation: {:.2f} %\n".format(port_stdev * 100))
+    print("Given proportion invested in risk-free asset: -50%")
+    print("Given proportion invested in market portfolio: 150%\n")
+    print("Portfolio expected return: {:.2f}%".format((-0.5 * rf_return + 1.5 * portfolio_returns[market_portfolio_index]) * 100))
+    print("Portfolio standard deviation: {:.2f}%\n".format((1.5 * portfolio_sds[market_portfolio_index]) * 100))
