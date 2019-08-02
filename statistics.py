@@ -1,37 +1,33 @@
-import stock_api
-import numpy
-import math
+import numpy as np
 
 
-def average_return(stock):
-    stock_returns = stock_api.get_stock_returns(stock)
-    avg_return = numpy.mean(stock_returns, keepdims = 0)
-    return (avg_return + 1) ** 12 - 1;
+# Calculates annual mean returns of returns stored in data frame
+def annual_mean_returns(monthly_returns):
+    annual_mean_rets = (1 + monthly_returns.mean())**12 - 1
+    return np.array(annual_mean_rets)
 
 
-def variance(stock):
-    stock_returns = stock_api.get_stock_returns(stock)
-    return 12 * numpy.var(stock_returns, ddof = 1, keepdims = 0)
+# Calculates annual covariances of returns stored in data frame
+def annual_covariances(monthly_returns):
+    annual_covs = monthly_returns.cov() * 12
+    return np.array(annual_covs)
 
 
-def covariance(stock_1, stock_2):
-    stock_1_returns = stock_api.get_stock_returns(stock_1)
-    stock_2_returns = stock_api.get_stock_returns(stock_2)
-    return 12 * numpy.cov(stock_1_returns, stock_2_returns)[0][0]
+# Calculates the expected returns for a 2-stock portfolio
+def portfolio_returns(weights, returns):
+    return [w[0] * returns[0] + w[1] * returns[1] for w in weights]
 
 
-def portfolio_variance(stock_1, stock_2, stock_1_proportion, stock_2_proportion):
-    return stock_1_proportion ** 2 * variance(stock_1) + stock_2_proportion ** 2 * variance(stock_2) +\
-           stock_1_proportion * stock_2_proportion * covariance(stock_1, stock_2)
+# Calculates the variances for a 2-stock portfolio
+def portfolio_variances(weights, covariances):
+    return [w[0]**2 * covariances[0, 0] + w[1]**2 * covariances[1, 1] + 2 * w[0] * w[1] * covariances[0, 1] for w in weights]
 
 
-def portfolio_standard_deviation(stock_1, stock_2, stock_1_proportion, stock_2_proportion):
-    var = portfolio_variance(stock_1, stock_2, stock_1_proportion, stock_2_proportion)
-    return math.sqrt(var) * math.sqrt(12)
+# Calculates the standard deviation for a 2-stock portfolio
+def portfolio_standard_deviations(portfolio_variances):
+    return [np.sqrt(v) for v in portfolio_variances]
 
 
-def portfolio_return(stock_1, stock_2, stock_1_proportion, stock_2_proportion):
-    return stock_1_proportion * average_return(stock_1) + stock_2_proportion * average_return(stock_2)
 
 
 
