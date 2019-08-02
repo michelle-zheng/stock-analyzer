@@ -1,6 +1,4 @@
-import stock_api
 import numpy as np
-import math
 
 
 # Calculates annual mean returns of returns stored in data frame

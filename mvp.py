@@ -26,7 +26,7 @@ def analysis(stock_1, stock_2, monthly_returns):
             min_index = i
 
     # Output answer to Part I
-    print("\nMVP proportion " + stock_1 + ": " + str(weights[min_index][0] * 100) + "%")
-    print("MVP proportion " + stock_2 + ": " + str(weights[min_index][1] * 100) + "%")
-    print("MVP standard deviation: " + str(round(portfolio_sds[min_index] * 100, 2)) + "%")
-    print("MVP expected portfolio return: " + str(round(portfolio_returns[min_index] * 100, 2)) + "%")
+    print ("\nMVP proportion {:s} : {:.2f}%".format(stock_1, weights[min_index][0] * 100))
+    print ("MVP proportion {:s} : {:.2f}%".format(stock_2, weights[min_index][1] * 100))
+    print ("MVP standard deviation: {:.2f}%".format(portfolio_sds[min_index] * 100))
+    print ("MVP expected portfolio return: {:.2f}%".format(portfolio_returns[min_index] * 100))
