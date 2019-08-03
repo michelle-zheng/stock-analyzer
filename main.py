@@ -6,8 +6,7 @@ import pandas as pd
 
 def main():
     while True:
-        cmd = raw_input("Enter 'c' for 2-stock comparison. Enter 'b' for "
-                        "the answer to the bonus question. Enter 'q' to quit."
+        cmd = raw_input("\nEnter 'c' for 2-stock comparison. Enter 'q' to quit."
                         " Enter your command: ").lower()
 
         if cmd == "q":
@@ -19,7 +18,7 @@ def main():
         # Perform 2-stock comparison
         if cmd == "c":
             # Get the symbols of the stocks being compared
-            stock_1 = raw_input("Enter the first stock symbol: ").upper()
+            stock_1 = raw_input("\nEnter the first stock symbol: ").upper()
             stock_2 = raw_input("Enter the second stock symbol: ").upper()
 
             # Get return on risk-free asset
@@ -60,11 +59,13 @@ def main():
             print("\nAnswer to Part II")
             cml.analysis(rf_return, stock_1, stock_2, monthly_returns)
 
-        # Output the market portfolio of 5-10 stocks that when split with
-        # even proportions has an expected return of >= 10% and a portfolio
-        # standard deviation of <= 5%
-        elif cmd == "b":
-            print("Answer to Bonus")
+            # Output the market portfolio of 5-10 stocks that when split with
+            # even proportions has an expected return of >= 10% and a portfolio
+            # standard deviation of <= 5%
+            print("Answer to Bonus\n")
+            print("The stocks are: HIG, O, MCD, KO, FE")
+            print("It has an expected return of 26% and a standard deviation of 6%")
+            print("(The standard deviation isn't <= 5% but after 4 hours of stock searching this is the best we could get)")
 
 
 if __name__ == '__main__':
