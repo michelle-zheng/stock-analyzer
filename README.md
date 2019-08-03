@@ -6,11 +6,15 @@
 
 10%
 
-**How To Run the Code**
+**How To Run the Code + Other Notes**
 
-Run 'python2 main.py' from the directory that contains main.py. We use Python 2.7. Xming or 
+Run 'python2 main.py' from the directory that contains main.py. We use Python 2.7. 
+
+Xming or 
 some program that supports X11 must be launched for the efficient frontier graph
-to show. The API call may take some time and may time out; if it does, just run the
+to show. The graph must be closed before the answer to the bonus question can show.
+
+The API call may take some time and may time out; if it does, just run the
 program again.
 
 **Packages Used**
