@@ -1,3 +1,4 @@
+matplotlib
 unirest==1.1.7
 numpy==1.16.4
 pandas==0.24.2
