@@ -60,13 +60,8 @@ def analysis(rf_return, stock_1, stock_2, monthly_returns):
     print("Portfolio expected return: {:.2f}%".format((-0.5 * rf_return + 1.5 * portfolio_returns[market_portfolio_index]) * 100))
     print("Portfolio standard deviation: {:.2f}%\n".format((1.5 * portfolio_sds[market_portfolio_index]) * 100))
 
-
-    # Efficient frontier
-    port_returns = [portfolio_returns[index] for index in range(len(portfolio_returns)) if index % 4 == 0]
-    port_sds = [portfolio_sds[index] for index in range(len(portfolio_sds)) if index % 4 == 0]
-    port_srs = [portfolio_sharpe_ratios[index] for index in range(len(portfolio_sharpe_ratios)) if index % 4 == 0]
-
-    df = pd.DataFrame([port_returns, port_sds, port_srs]).transpose()
+    # Efficient Frontier
+    df = pd.DataFrame([portfolio_returns, portfolio_sds, portfolio_sharpe_ratios]).transpose()
     df.columns = ['Returns', 'Volatility', 'Sharpe Ratio']
 
     plt.style.use('seaborn-dark')
